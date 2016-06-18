@@ -1,47 +1,68 @@
 #!/usr/bin/python
+"""
+Algorithm class: sorting
+Algorithm name:  insertion sort
+Description:     https://en.wikipedia.org/wiki/Insertion_sort
 
+                 Given a list of n items.
+
+		 Track an index into the array such that elements before the index are considered sorted, after unsorted
+
+		 For each index position starting at 0 up till n-1
+
+		 Take the number at the index and insert it into the sorted portion of the array. 
+
+Notes:           Typically done in-place.  Simple.  Fine for small datasets.  More efficient than selection sort since only needs to perform partial scan for each iteration.
+Time complexity: n-squared
+                 Iteration => N
+                 Scan => N
+                 Insertion => 1
+ 
+
+"""
 strRaw=raw_input("Enter a list of numbers:\n")
 #strRaw="5,2,8,5,10"
 
 print "You entered {0}.".format(strRaw)
 
-intList=[int(i) for i in strRaw.split(",")]
+# list comprehension
+inPlace=[int(i) for i in strRaw.split(",")]
 
-sorted=[]
+idx=1
+"""
+Inserts the value at srcIdx into tgtIdx, shifting items to right.
+"""
+def doInsert(array, srcIdx, tgtIdx):
+  print "doInsert [array={0}, val={1}, srcIdx={2}, tgtIdx={3}".format(array, array[srcIdx], srcIdx, tgtIdx)
+  val=array[srcIdx]
 
-sorted=intList
+  limit=srcIdx
+  i=limit
 
-idx=0
+  # shift
+  while i > tgtIdx:
+    array[i] = array[i-1]
+    i -= 1
+  
+  array[tgtIdx] = val
+    
 
-'''
-algorithm definition
-
-given an unsorted array of length n
-
-track an index into the array such that elements before the index are considered sorted, after unsorted
-
-for each index position starting at 0 up till n-1
-
-take the number at the index and insert it into the sorted portion of the array 
-'''
-
-def foo(array, idx):
+def doNext(array, idx):
   sorted=array[0:idx]
   elToInsert=array[idx]
   print "Processing array [idx={0}, sorted={1}, unsorted={2}, elToInsert={3}".format(idx, sorted, array[idx:len(array)], elToInsert)
 
 
   for i, el in enumerate(sorted):
-    print "Enumerating [index={0}, val={1}]".format(i, el)
+    print "Scanning for insertion point [index={0}, val={1}]".format(i, el)
     if el > elToInsert:
-      print "Swapping in {0} at index {1}".format(elToInsert, i)
-      temp=el
-      array[i]=elToInsert
-      array[idx]=temp
+      print "Inserting {0} at index {1}".format(elToInsert, i)
+      doInsert(array, idx, i)
       break
-      
-while idx < len(intList):
-  foo(intList, idx)
+
+print "Starting..."      
+while idx < len(inPlace):
+  doNext(inPlace, idx)
   idx+=1
 
-print "Sorted array ({0})".format(intList)
+print "Sorted array ({0})".format(inPlace)
