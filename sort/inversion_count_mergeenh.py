@@ -22,6 +22,7 @@ def countInversions(l, r):
 
 def merge(l,r):
   #print "Merging [l=" + str(l) + ", r=" + str(r) + "]"
+  countInversions(l, r)
   merged=[]
 
   while len(l) > 0 and len(r) > 0:
@@ -56,7 +57,6 @@ def sort(arr):
   sortedl=sort(arrl)
   sortedr=sort(arrr)
 
-  countInversions(sortedl, sortedr)
   return merge(sortedl,sortedr)
 
 sorted=sort(inPlace)
