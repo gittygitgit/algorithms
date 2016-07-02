@@ -1,5 +1,7 @@
 #!/usr/bin/python
-
+'''
+Uses last el as pivot.
+'''
 with open("entries.txt") as f:
   entries=f.readlines()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 '''
-Uses first el as pivot.
+Uses median el as pivot.
 '''
 with open("entries.txt") as f:
   entries=f.readlines()
@@ -15,10 +15,20 @@ print len(inPlace)
 
 #inPlace=[9,6,7,8,5,2,1,4,3]  
 numCompares=0
-def choosePivot(a):
-  return a[0]
 
-# returns the index of the pivot within the partitioned array
+def choosePivot(a):
+  med=(len(a)/2)-1 if len(a)%2 == 0 else (len(a)-1)/2
+
+  idx=-1;
+  if a[0] <= a[med] <= a[-1] or a[-1] <= a[med] <= a[0] :
+    idx = med
+  elif a[med] <= a[0] <= a[-1] or a[-1] <= a[0] <= a[med]:
+    idx = 0
+  else:
+    idx = -1 
+
+  return idx
+
 def partition(a, p):
   print "Partition [a={0}, pivot={1}]".format(a, str(p))
 
@@ -46,8 +56,15 @@ def partition(a, p):
   
 def quicksort(a, level):
   level  += 1
-  pivot=choosePivot(a)
+  idx=choosePivot(a)
+ 
+  print "pivotIdx={0}".format(idx)
+  pivot = a[idx]
   global numCompares
+
+  # Swap pivot w/ first element just before the partition subroutine is called
+  a[idx] = a[0]
+  a[0] = pivot
 
   numCompares += (len(a) - 1)
   print "Quicksort [level={0}, len(a)={1}, pivot={2}]".format(level, str(len(a)), str(pivot))
@@ -60,7 +77,7 @@ def quicksort(a, level):
   print "Partitioned={0}, pivotIdx={1}".format(a, pivotIdx)
   # recursively sort subarrays
 
-  l = a[0:pivotIdx-1]
+  l = [] if pivotIdx == 0 else a[0:pivotIdx-1]
   
   r=[] if pivotIdx == len(a) else a[pivotIdx:len(a)]
 
@@ -77,7 +94,7 @@ def quicksort(a, level):
   print "sorted={0}".format(result)
   return result
 
-
+print "Starting [unsorted={0}".format(inPlace)
 result = quicksort(inPlace, 0)
 print len(result)
 print result
