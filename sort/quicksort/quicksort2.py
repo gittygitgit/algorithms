@@ -14,7 +14,7 @@ print len(inPlace)
 #inPlace=[9,6,7,8,5,2,1,4,3]  
 numCompares=0
 def choosePivot(a):
-  return a[0]
+  return a[-1]
 
 # returns the index of the pivot within the partitioned array
 def partition(a, p):
@@ -47,6 +47,10 @@ def quicksort(a, level):
   pivot=choosePivot(a)
   global numCompares
 
+  # Swap pivot w/ first element just before the partition subroutine is called
+  a[-1] = a[0]
+  a[0] = pivot
+
   numCompares += (len(a) - 1)
   print "Quicksort [level={0}, len(a)={1}, pivot={2}]".format(level, str(len(a)), str(pivot))
   if len(a) == 1:
@@ -58,7 +62,7 @@ def quicksort(a, level):
   print "Partitioned={0}, pivotIdx={1}".format(a, pivotIdx)
   # recursively sort subarrays
 
-  l = a[0:pivotIdx-1]
+  l = [] if pivotIdx == 0 else a[0:pivotIdx-1]
   
   r=[] if pivotIdx == len(a) else a[pivotIdx:len(a)]
 
